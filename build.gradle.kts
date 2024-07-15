@@ -13,4 +13,4 @@ dependencies{
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC")
 }
 
-sourceSets.main{kotlin.srcDirs("src")}
+sourceSets.main{kotlin.srcDirs("src"); resources.srcDirs("res")}
