@@ -2,7 +2,8 @@ package format
 import collections.sorted
 import kotlinx.coroutines.flow.*
 import net.ports
-import java.io.File
+import resources.Ports.blacklist
+import resources.Ports.whitelist
 
 private fun Flow<Int>.toRanges()= flow {
 	var x: Int?=null; var y: Int?=null
@@ -16,10 +17,5 @@ private fun Flow<IntRange>.cut(min: Int, max: Int) = flow {
 	emit(x..max)
 }
 
-private fun portFile(name: String) = File(ClassLoader.getSystemResource(name).file).readLines().map(String::toInt)
-
-val white = portFile("port_whitelist").toSet()
-val black = portFile("ports").asFlow()
-
-fun blockRanges() = merge(ports.sorted().distinctUntilChanged().filterNot(white::contains), black)
+fun blockRanges() = merge(ports,blacklist).sorted().distinctUntilChanged().filterNot(whitelist::contains)
 	.toRanges().cut(1,UShort.MAX_VALUE.toInt())

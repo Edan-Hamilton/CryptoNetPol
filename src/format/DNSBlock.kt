@@ -3,6 +3,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 import collections.Trie
 import net.*
+import resources.Templates
 import java.io.File
 
 private fun Trie<Char>.regex(): String = children.map{(k,v)->
@@ -24,17 +25,5 @@ private val regex = cache.groupBy{etldp1(it)}
 		else tld.joinToString("\\.",".*")
 	}.map{it.asIterable()}.toCollection(Trie()).regex()
 
-fun writeRegEx() = File("DNSBlocking.yml").writeText("""
-	apiVersion: v1
-	kind: ConfigMap
-	metadata:
-	  name: coredns-custom
-	  namespace: kube-system
-	data:
-	  BlockCrypto.override: |
-	    template ANY ANY {
-	      match "$regex"
-	      rcode NXDOMAIN
-	      fallthrough
-	    }
-""".trimIndent())
+fun writeRegEx() = File("DNSBlocking.yml")
+	.writeText(Templates.DNS.readText().replace("$", regex))
