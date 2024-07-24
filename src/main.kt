@@ -1,6 +1,6 @@
 import format.*
 
 suspend fun main(){
-//	writePolicy()
-//	writeRegEx()
+	writePolicy()
+	writeRegEx()
 }

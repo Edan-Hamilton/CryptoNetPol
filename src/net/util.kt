@@ -17,6 +17,8 @@ import kotlinx.serialization.json.Json
 import java.net.URI
 import java.util.zip.GZIPInputStream
 
+const val gh = "https://raw.githubusercontent.com"
+
 private val client = HttpClient{ install(ContentNegotiation){ json(Json{ ignoreUnknownKeys = true }) } }
 @Serializable private data class Miner(val url: String)
 

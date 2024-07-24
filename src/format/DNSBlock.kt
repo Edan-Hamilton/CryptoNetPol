@@ -1,7 +1,7 @@
 package format
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
-import collections.Trie
+import lib.Trie
 import net.*
 import resources.Templates
 import java.io.File
@@ -11,15 +11,12 @@ private fun Trie<Char>.regex(): String = children.map{(k,v)->
 }.joinToString("|")
 
 private val etlds = runBlocking{
-	getFiles("https://raw.githubusercontent.com/publicsuffix/list/master/public_suffix_list.dat")
+	getFiles("$gh/publicsuffix/list/master/public_suffix_list.dat")
 		.filterNot{ it.startsWith("//") }.map{it.split('.').asReversed()}.toCollection(Trie())
 }
 
-private fun etldp1(domain: String) = domain.split('.')
-	.run{takeLast(etlds.match(asReversed()) + 1)}
-
-//	Scanner(File("blocklist.bac")).asSequence().drop(1)
-private val regex = cache.groupBy{etldp1(it)}
+private val regex = cache
+	.groupBy{it.split('.').run{takeLast(etlds.match(asReversed())+1)}}
 	.map{(tld,doms)->
 		if(doms.size==1) doms.single()
 		else tld.joinToString("\\.",".*")

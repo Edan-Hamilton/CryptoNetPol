@@ -3,7 +3,7 @@ import DNS.Record.*
 import DNS.Resolver
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
-import collections.*
+import lib.*
 
 object DNSErrors { val data: Array<Int> = Array(6){0}
 	operator fun get(i: Int) = data[i]

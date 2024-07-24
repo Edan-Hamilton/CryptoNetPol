@@ -1,11 +1,7 @@
-package collections
+package lib
 import kotlinx.coroutines.flow.*
 import java.util.*
 import kotlin.collections.HashSet
-
-fun<T> Iterator<T>.nextOrNull() = if(hasNext()) next() else null
-
-// helper methods for dealing with flows
 
 inline fun<T> Flow<Result<T>>.handle(crossinline fn: suspend FlowCollector<T>.(Throwable)->Unit) =
 	transform{ it.onSuccess{emit(it)}.onFailure{fn(it)} }
