@@ -1,0 +1,10 @@
+sha-512
+sha-256
+keccak
+kangarootwelve
+groestl
+scrypt
+skein
+blake
+blake3
+argon2d

@@ -1,0 +1,16 @@
+image:
+  repository: ghcr.io/edan-hamilton/cryptnono
+  tag: 0.0.3
+detectors:
+  execwhacker:
+    configs:
+      mining-protocols:
+        bannedCommandStrings:
+        - stratum+
+      pool-strings:
+        bannedCommandStrings:
+        - pool.
+        - mine.
+        - .mine
+      crypto-algos:
+        bannedCommandStrings:

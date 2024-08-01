@@ -5,9 +5,8 @@ import net.ips
 import resources.Templates
 import java.io.*
 
-suspend fun writePolicy() = File("NetworkPolicy.yml").bufferedWriter().use{file->
-	Templates.ports.close{transferTo(file)}
+suspend fun writePolicy() = Templates.ports.copyTo(File("NetworkPolicy.yml"),true).bufferedWriter().use{file->
 	blockRanges().map{"  - port: ${it.first}\n    endPort: ${it.last}"}.collect(file::appendLine)
-	Templates.ips.close{transferTo(file)}
+	Templates.ips.reader().close{transferTo(file)}
 	ips().map{"  - ${it.hostAddress}/32"}.collect(file::appendLine)
 }

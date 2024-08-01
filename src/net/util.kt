@@ -20,7 +20,6 @@ import java.util.zip.GZIPInputStream
 const val gh = "https://raw.githubusercontent.com"
 
 private val client = HttpClient{ install(ContentNegotiation){ json(Json{ ignoreUnknownKeys = true }) } }
-@Serializable private data class Miner(val url: String)
 
 private fun HttpResponse.lineFlow() = flow {
 	val chan = bodyAsChannel()
@@ -31,10 +30,17 @@ fun getFiles(vararg files: String) = files.asFlow()
 	.flatMapMerge{client.get(it).lineFlow()}.filterNot(CharSequence::isEmpty)
 
 suspend fun liveAPI() = coroutineScope{
+	@Serializable data class Miner(val url: String)
 	client.get("https://api.minerstat.com/v2/pools").body<List<Miner>>().map{async{
 		Ksoup.parseGetRequest("https://minerstat.com/pools/${it.url}/addresses")
 			.select(".td.flexAddress").eachText()
 	}}.awaitAll().flatten()
+}
+
+suspend fun algos() = coroutineScope{
+	@Serializable data class Coin(val algorithm: String)
+	client.get("https://api.minerstat.com/v2/coins").body<List<Coin>>()
+		.map{it.algorithm.takeWhile{c->c!=' '&&c!='('}.lowercase()}
 }
 
 fun getArchive(uri: String)= flow {
