@@ -1,3 +1,4 @@
 - op: add
   path: /spec/egress/-1/ports
   value:
+  - protocol: UDP
