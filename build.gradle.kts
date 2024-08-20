@@ -13,6 +13,10 @@ dependencies{
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC")
 }
 
-tasks.jar{ manifest.attributes["Main-Class"] = "MainKt" }
+tasks.jar{
+	manifest.attributes["Main-Class"] = "MainKt"
+	from(configurations.runtimeClasspath.get().map(::zipTree))
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
 
 sourceSets.main{kotlin.srcDirs("src"); resources.srcDirs("res")}
