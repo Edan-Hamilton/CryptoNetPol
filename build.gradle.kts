@@ -13,4 +13,6 @@ dependencies{
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC")
 }
 
+tasks.jar{ manifest.attributes["Main-Class"] = "MainKt" }
+
 sourceSets.main{kotlin.srcDirs("src"); resources.srcDirs("res")}
