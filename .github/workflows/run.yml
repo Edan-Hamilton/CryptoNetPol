@@ -28,4 +28,7 @@ jobs:
     - name: Build with Gradle
       run: gradle build
 
-    - run: java -jar build/libs/CryptoIPs.jar
+    - run: java -jar build/libs/CryptoNetPol.jar
+    - run: ls
+    - run: ls build
+    - run: ls build/libs
