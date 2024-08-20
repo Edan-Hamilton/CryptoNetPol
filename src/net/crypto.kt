@@ -27,7 +27,7 @@ private val withPorts = runBlocking{(liveAPI() + getFiles(PORT_LIST).toList())}
 	.let{(domains,portList)->
 		ports = portList.map(String::toUShort).asFlow()
 		domains.partition{it.all{c->c.isDigit()||c=='.'}}.let{(ipList,domains)->
-			ips = toIPs(ipList); domains.asFlow()
+			ips = toIPs(ipList).asFlow(); domains.asFlow()
 		}
 	}
 

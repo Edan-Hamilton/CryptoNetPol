@@ -3,7 +3,7 @@ import kotlinx.coroutines.flow.*
 import java.net.InetAddress
 
 fun toIPs(value: List<String>) =
-	value.map{it.split('.').map{it.toUByte().toByte()}.toByteArray()}.map(InetAddress::getByAddress).asFlow()
+	value.map{it.split('.').map{it.toUByte().toByte()}.toByteArray()}.map(InetAddress::getByAddress)
 
 fun sanitize(domains: Flow<String>) = domains.map{dom->dom
 	.takeWhile{it!='/'}
