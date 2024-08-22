@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.*
 import lib.*
 import resources.IPs.blacklist
 import resources.IPs.whitelist
-import resources.ip_blacklist
 
 object DNSErrors { val data: Array<Int> = Array(6){0}
 	operator fun get(i: Int) = data[i]

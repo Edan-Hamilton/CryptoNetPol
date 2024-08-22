@@ -31,4 +31,3 @@ object IPs {
 }
 
 val cryptnono_allows = (Whitelist.common + Whitelist.hash).toSet()
-val ip_blacklist = toIPs(Blacklist.ips)
