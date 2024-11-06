@@ -1,7 +1,6 @@
-package format
+package net
 import lib.sorted
 import kotlinx.coroutines.flow.*
-import net.ports
 import resources.Ports.blacklist
 import resources.Ports.whitelist
 
@@ -17,5 +16,6 @@ private fun Flow<UIntRange>.cut(min: UInt, max: UInt) = flow {
 	emit(x..max)
 }
 
-fun blockRanges() = merge(ports,blacklist).sorted().distinctUntilChanged().filterNot(whitelist::contains)
+fun blockRanges(ports: Flow<UShort>) = merge(ports,blacklist).sorted()
+	.distinctUntilChanged().filterNot(whitelist::contains)
 	.toRanges().cut(1u,UShort.MAX_VALUE.toUInt())

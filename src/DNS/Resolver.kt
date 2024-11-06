@@ -2,6 +2,7 @@ package DNS
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.sync.*
+import suspending.SuspendingSocket
 import java.net.*
 import java.nio.ByteBuffer
 

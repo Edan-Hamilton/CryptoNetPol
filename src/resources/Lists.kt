@@ -1,11 +1,11 @@
 package resources
 import kotlinx.coroutines.flow.asFlow
-import lib.toIPs
+import net.toIPs
 import kotlin.reflect.KProperty
 
 object ListFile {
 	operator fun getValue(ref: Any, prop: KProperty<*>) =
-		Resource.get(Resource.fromProp(ref,prop)).readLines()
+		Resource.get(Resource.fromProp(ref,prop)).bufferedReader().lineSequence()
 }
 
 private object Blacklist {

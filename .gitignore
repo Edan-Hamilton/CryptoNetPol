@@ -2,4 +2,3 @@ build
 gradle
 .gradle
 .kotlin
-/*.yml

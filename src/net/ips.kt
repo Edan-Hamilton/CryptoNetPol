@@ -4,8 +4,6 @@ import DNS.Resolver
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import lib.*
-import resources.IPs.blacklist
-import resources.IPs.whitelist
 
 object DNSErrors { val data: Array<Int> = Array(6){0}
 	operator fun get(i: Int) = data[i]
@@ -14,9 +12,8 @@ object DNSErrors { val data: Array<Int> = Array(6){0}
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-private suspend fun lookup() = domains.chunked(Short.MAX_VALUE.toInt())
+suspend fun lookupIPs(domains: Flow<String>) =
+	domains.chunked(Short.MAX_VALUE.toInt())
 	.flatMapMerge{ Resolver(1,1,1,1).lookup(it) }
 	.handle{ if(it is DNSException) DNSErrors[it.code.ordinal]++ else throw it }
 	.flatten()
-
-suspend fun ips() = merge(lookup(), ips, blacklist).distinct().filterNot(whitelist::contains)
