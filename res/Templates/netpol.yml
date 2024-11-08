@@ -3,6 +3,6 @@ jupyterhub:
     networkPolicy:
       egressAllowRules: { nonPrivateIPs: false }
       egress:
-      - ports: [ @ ]
+      - ports: [ %s ]
         to:
-        - ipBlock: { cidr: 0.0.0.0/0, except: [ @ ] }
+        - ipBlock: { cidr: 0.0.0.0/0, except: [ %s ] }
