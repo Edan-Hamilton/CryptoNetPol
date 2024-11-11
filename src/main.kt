@@ -24,7 +24,7 @@ suspend fun main(): Unit = runBlocking{
 
 	Formatter("NetworkPolicy.yml")
 		.format(Templates.cryptnono.readText(),args.await())
-		.format("dnsFilter: '%s'\n", filter.await())
+		.format("dnsFilter: '.*(%s)'\n", filter.await())
 		.format(Templates.netpol.readText(),portStr)
 		.close()
 

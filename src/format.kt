@@ -17,12 +17,11 @@ suspend fun DNSFilter(domains: List<String>): String {
 		.map{it.split('.').asReversed()}
 		.toCollection(Trie())
 
-	val regex = domains.groupBy{it.split('.').run{
+	return domains.groupBy{it.split('.').run{
 		takeLast(etlds.match(asReversed().iterator()){if(children.contains("*")) 2 else 1})
 	}}.map{(tld,doms)->
 		if(doms.size==1) doms.single()
-		else tld.joinToString("\\.",".*")
+		else tld.joinToString(".")
 	}.map{it.asIterable()}.toCollection(Trie()).regex()
-
-	return regex
+		.replace(".","\\.")
 }
