@@ -5,7 +5,7 @@ import resources.cryptnono_allows
 
 suspend fun formatCryptnono() = algos().toMutableSet().apply{removeAll(cryptnono_allows)}
 	.map(String::asIterable).toCollection(Trie()).asSequence()
-	.map{it.joinToString(", ")}
+	.map{it.joinToString("")}
 
 private fun Trie<Char>.regex(): String = children.map{(k,v)->
 	k + if(!v.isEmpty()) v.regex().let{ if(v.size==1) it else "($it)" } else ""

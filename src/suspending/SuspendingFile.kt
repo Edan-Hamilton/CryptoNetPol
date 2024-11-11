@@ -2,18 +2,20 @@ package suspending
 import java.nio.ByteBuffer
 import java.nio.channels.*
 import java.nio.file.Paths
-import java.nio.file.StandardOpenOption.*
+import java.nio.file.StandardOpenOption.WRITE
 import java.util.concurrent.atomic.AtomicLong
 
-class SuspendingFile private constructor(chan: AsyncFileBytes): SuspendingChannel(chan) {
+class SuspendingFile private constructor(private val file: AsyncFileBytes): SuspendingChannel(file), Seekable by file {
 	constructor(path: String): this(AsyncFileBytes(path))
 
-	suspend fun append(str: String) = write(ByteBuffer.wrap(str.toByteArray()))
+	suspend fun write(str: String) = write(ByteBuffer.wrap(str.toByteArray()))
 
 	private class AsyncFileBytes(
-		path: String, val file: AsynchronousFileChannel = AsynchronousFileChannel.open(Paths.get(path), WRITE, CREATE)
-	): AsynchronousByteChannel {
-		init { file.truncate(0) }
+		path: String, val file: AsynchronousFileChannel = AsynchronousFileChannel.open(Paths.get(path), WRITE),
+	): AsynchronousByteChannel, Seekable  {
+		override fun size() = file.size()
+		override fun position() = pos.get()
+		override fun position(newPosition: Long) = pos.set(newPosition).let{this}
 
 		override fun close() = file.close()
 		override fun isOpen() = file.isOpen

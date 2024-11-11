@@ -5,4 +5,6 @@ jupyterhub:
       egress:
       - ports: [ %s ]
         to:
-        - ipBlock: { cidr: 0.0.0.0/0, except: [ %s ] }
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except: 
