@@ -27,4 +27,5 @@ fun getArchive(uri: String)= flow {
 	GZIPInputStream(URI(uri).toURL().openStream())
 		.toByteReadChannel().apply{discard(512)}
 		.let{ while(true) emit(it.readUTF8Line()!!) }
-}.flowOn(Dispatchers.IO).takeWhile{!it.startsWith('\u0000')}
+}.takeWhile{!it.startsWith('\u0000')}
+	.catch{}.flowOn(Dispatchers.IO)
