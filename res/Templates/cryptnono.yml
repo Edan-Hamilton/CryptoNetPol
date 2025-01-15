@@ -1,5 +1,0 @@
-blockArgs: &blocked
-  protocols: { bannedCommandStrings: [ stratum+ ] }
-  pools: { bannedCommandStrings: [ pool., mine., .mine ] }
-  algos: { bannedCommandStrings: [ %s ] }
-cryptnono: { detectors: { execwhacker: { configs: *blocked } } }

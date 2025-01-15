@@ -37,7 +37,7 @@ class Resolver: SuspendingSocket() {
 	private val readLock = Mutex()
 	private suspend fun readPacket() = readLock.withLock{read(read(2).getShort().toInt())}
 	suspend fun readRecord() = runCatching{Record(readPacket())}
-	suspend fun lookup(domains: Iterable<String>) = callbackFlow{
+	fun lookup(domains: Iterable<String>) = callbackFlow{
 		domains.map{ lookup(it); launch{ send(readRecord()) } }.joinAll()
 		close()
 	}
